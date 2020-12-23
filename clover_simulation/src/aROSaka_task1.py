@@ -35,50 +35,51 @@ def navigate_wait(x=0, y=0, z=0, yaw=float('nan'), yaw_rate=0, speed=0.5, \
         rospy.sleep(0.2)
 
 
-
-
 bridge = CvBridge()
 
 # Image subscriber callback function
-def image_callback(img):
-    while True:
-        barcodes = pyzbar.decode(img)
-        if len(barcodes) == 0: 
-            print('barcode not found')
-            continue
+def get_target_from_barcode(barcodes):
         for barcode in barcodes:
             b_data = barcode.data.encode("utf-8")
             b_type = barcode.type
             (x, y, w, h) = barcode.rect
             xc = x + w/2
             yc = y + h/2
-            print ("Found {} with data {} with center at x={}, y={}".format(b_type, b_data, xc, yc))
+            print ("Found QR CODE with data {}".format(b_data))
             map_x, map_y = b_data.split(' ')
-            print(map_x)
-            print(map_y)
             return map_x, map_y
 
 
 # Take off 1 meter
-navigate_wait(z=1, frame_id='body', auto_arm=True)
+navigate_wait(z=1, speed=1.0, frame_id='body', auto_arm=True)
 print('lifted off')
-navigate_wait(x=2, frame_id='body', auto_arm=False)
+navigate_wait(x=2, z=1, speed=1.0, frame_id='aruco_map', auto_arm=False)
 print('target approached')
 
 for i in range(3):
-    img = bridge.imgmsg_to_cv2(rospy.wait_for_message('main_camera/image_raw', Image), 'bgr8')
-    map_x, map_y = image_callback(img)
 
-    navigate_wait(x=float(map_x), y=float(map_y), z=1.0, frame_id='map', auto_arm=True)
+    while True:
+        img = bridge.imgmsg_to_cv2(rospy.wait_for_message('main_camera/image_raw', Image), 'bgr8')
+        barcodes = pyzbar.decode(img)
+        if len(barcodes) == 0: 
+            print('searching for QR codes...')
+            continue
+        break
+
+    map_x, map_y = get_target_from_barcode(barcodes)
+
+    navigate_wait(x=float(map_x), y=float(map_y), z=1, speed=1.0, frame_id='aruco_map', auto_arm=True)
     print('target approached')
-    rospy.sleep(3)
+    rospy.sleep(1)
 
 
 # Fly forward 1 m
 # navigate_wait(x=5, y=0, frame_id='aruco_map')
 
 
-rospy.sleep(2)
-
+rospy.sleep(0.5)
+print('landing')
 # Land
 land()
+
+print('drone has landed')

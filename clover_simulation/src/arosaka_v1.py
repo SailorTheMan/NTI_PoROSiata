@@ -11,28 +11,12 @@ from std_srvs.srv import Trigger
 from sensor_msgs.msg import Image
 
 
-SAFE_HEIGHT = 2.0
+SAFE_HEIGHT = 1.0
 MARKER_DIST = 0.9
 RED_BOUNDS = (0, 5)
 YELLOW_BOUNDS = (25, 35)
 BLUE_BOUNDS = (10, 15) #check bounds
 GREEN_BOUNDS = (55, 65)
-
-
-def navigate_wait(x=0, y=0, z=0, yaw=float('nan'), yaw_rate=0, speed=0.5, \
-        frame_id='body', tolerance=0.2, auto_arm=False):
-
-    res = navigate(x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed, \
-        frame_id=frame_id, auto_arm=auto_arm)
-
-    if not res.success:
-        return res
-
-    while not rospy.is_shutdown():
-        telem = get_telemetry(frame_id='navigate_target')
-        if math.sqrt(telem.x ** 2 + telem.y ** 2 + telem.z ** 2) < tolerance:
-            return res
-        rospy.sleep(0.2)
 
 
 def getcolor():
@@ -59,6 +43,30 @@ def getcolor():
     return 'error'
 
 
+def navigate_wait(x=0, y=0, z=0, yaw=float('nan'), yaw_rate=0, speed=0.5, \
+        frame_id='body', tolerance=0.2, auto_arm=False):
+
+    res = navigate(x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed, \
+        frame_id=frame_id, auto_arm=auto_arm)
+
+    if not res.success:
+        return res
+
+    while not rospy.is_shutdown():
+        telem = get_telemetry(frame_id='navigate_target')
+        if math.sqrt(telem.x ** 2 + telem.y ** 2 + telem.z ** 2) < tolerance:
+            return res
+        rospy.sleep(0.2)
+
+
+def detect_products():
+    #going circle around the field
+    navigate_wait(x=0.9, y=0.9, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
+    navigate_wait(x=0.9, y=4.5, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
+    navigate_wait(x=2.7, y=4.5, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
+    navigate_wait(x=2.7, y=0.9, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
+
+
 rospy.init_node('flight')
 
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
@@ -76,26 +84,29 @@ bridge = CvBridge()
 navigate_wait(z=SAFE_HEIGHT, speed=1.0, frame_id='body', auto_arm=True)
 print('lifted off')
 
-coordinates = [[0, 2.5], [3.5, 0.5], [2, 1.5], [3.5, 3.5]]
-file = open("report.txt", "w") 
-file.write("Number  Coordinates   Color\n")
+detect_products()
 
-for i in range(4):
+# coordinates = [[0, 2.5], [3.5, 0.5], [2, 1.5], [3.5, 3.5]]
+# file = open("report.txt", "w") 
+# file.write("Number  Coordinates   Color\n")
 
-    map_x, map_y = coordinates[i]
-    print(map_x, map_y)
-    navigate_wait(x=float(map_x), y=float(map_y), z=0.5, speed=1.0, frame_id='aruco_map', auto_arm=True)
-    print('target approached')
+# for i in range(4):
 
-    color = getcolor()
-    print("Coordinate: {}, {}; color: {}".format(map_x, map_y, color))
+#     map_x, map_y = coordinates[i]
+#     print(map_x, map_y)
+#     navigate_wait(x=float(map_x), y=float(map_y), z=0.5, speed=1.0, frame_id='aruco_map', auto_arm=True)
+#     print('target approached')
 
-    file.write("  {}     x={}, y={}     {}\n".format(i+1, map_x, map_y, color))
+#     color = getcolor()
+#     print("Coordinate: {}, {}; color: {}".format(map_x, map_y, color))
 
-    rospy.sleep(1)
+#     file.write("  {}     x={}, y={}     {}\n".format(i+1, map_x, map_y, color))
+
+#     rospy.sleep(1)
 
 
 navigate_wait(x=0, y = 0, z = 0.5, speed=1.0, frame_id='aruco_map', auto_arm=False)
+navigate_wait(x=0, y = 0, z = 0.1, speed=1.0, frame_id='aruco_map', auto_arm=False)
 
 print('target approached')
 
@@ -106,4 +117,4 @@ print('landing')
 land()
 print('drone has landed')
 
-file.close()
+#file.close()

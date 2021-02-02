@@ -4,8 +4,8 @@
     <arg name="vehicle" default="clover"/> <!-- PX4 vehicle configuration: clover, clover_vpe -->
     <arg name="main_camera" default="true"/> <!-- Simulated vision position estimation camera (optical flow, ArUco) -->
     <arg name="rangefinder" default="true"/> <!-- Simulated downward-facing rangefinder, vl53l1x-like -->
-    <arg name="led" default="false"/> <!-- Simulated LED strip, ws281x-like -->
-    <arg name="gps" default="true"/> <!--Simulated GPS module -->
+    <arg name="led" default="true"/> <!-- Simulated LED strip, ws281x-like -->
+    <arg name="gps" default="false"/> <!--Simulated GPS module -->
     <arg name="use_clover_physics" default="false"/> <!-- Use inertial parameters from CAD models -->
 
     <!-- Gazebo instance -->
@@ -13,7 +13,7 @@
         <!-- Workaround for crashes in VMware -->
         <env name="SVGA_VGPU10" value="0"/>
         <arg name="gui" value="true"/>
-        <arg name="world_name" value="$(find clover_simulation)/resources/worlds/nti_world_1.world"/>
+        <arg name="world_name" value="$(find clover_simulation)/resources/worlds/world_guap.world"/>
         <arg name="verbose" value="true"/>
     </include>
 

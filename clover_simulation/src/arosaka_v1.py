@@ -11,7 +11,8 @@ from std_srvs.srv import Trigger
 from sensor_msgs.msg import Image
 
 
-SAFE_HEIGHT = 2.0
+SAFE_HEIGHT = 3.0
+SPEED = 0.3
 MARKER_DIST = 0.9
 RED_BOUNDS = (0, 5)
 YELLOW_BOUNDS = (25, 35)
@@ -57,12 +58,41 @@ def navigate_wait(x=0, y=0, z=0, yaw=float('nan'), yaw_rate=0, speed=0.5, \
             return res
         rospy.sleep(0.2)
 
+
+def take_picture(title):
+    rospy.sleep(1)
+    img = bridge.imgmsg_to_cv2(rospy.wait_for_message('main_camera/image_raw', Image), 'bgr8')
+    cv2.imwrite(title, img)
+
+
+
 def detect_products():
-    #going circles around the field
-    navigate_wait(x=0.9, y=0.9, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
-    navigate_wait(x=0.9, y=4.5, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
-    navigate_wait(x=2.7, y=4.5, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
-    navigate_wait(x=2.7, y=0.9, z=SAFE_HEIGHT, speed=1.0, frame_id='aruco_map', auto_arm=False)
+    #going circle around the field
+    navigate_wait(x=0.9, y=0.9, z=SAFE_HEIGHT, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('1.png')
+    print('target approached')
+    navigate_wait(x=2*MARKER_DIST, y=3*MARKER_DIST, z=SAFE_HEIGHT, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('2.png')
+    print('target approached')
+    navigate_wait(x=2*MARKER_DIST, y=5*MARKER_DIST, z=2.0, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('3.png')
+    print('target approached')
+    navigate_wait(x=2*MARKER_DIST, y=5*MARKER_DIST, z=1.0, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('4.png')
+    print('target approached')
+    navigate_wait(x=0, y=1 * MARKER_DIST, z=SAFE_HEIGHT, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('5.png')
+    print('target approached')
+    navigate_wait(x=1*MARKER_DIST, y=0, z=2.0, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('6.png')
+    print('target approached')
+    navigate_wait(x=1*MARKER_DIST, y=0, z=1.8, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+    take_picture('7.png')
+    print('target approached')
+    land()
+    print('landed')
+    rospy.sleep(2)
+
 
     #count all marks and colours, write report
 
@@ -100,7 +130,7 @@ if __name__ == "__main__":
     bridge = CvBridge()
 
     # Take off to the safe height 
-    navigate_wait(z=SAFE_HEIGHT, speed=1.0, frame_id='body', auto_arm=True)
+    navigate_wait(z=SAFE_HEIGHT, speed=SPEED, frame_id='body', auto_arm=True)
     print('lifted off')
 
     detect_products()       #does not 'detect' at this point
@@ -114,31 +144,16 @@ if __name__ == "__main__":
     # file = open("report.txt", "w") 
     # file.write("Number  Coordinates   Color\n")
 
-    # for i in range(4):
+# navigate_wait(x=0, y = 0, z = SAFE_HEIGHT, speed=SPEED, frame_id='aruco_map', auto_arm=False)
+# navigate_wait(x=0, y = 0, z = 0.1, speed=SPEED, frame_id='aruco_map', auto_arm=False)
 
-    #     map_x, map_y = coordinates[i]
-    #     print(map_x, map_y)
-    #     navigate_wait(x=float(map_x), y=float(map_y), z=0.5, speed=1.0, frame_id='aruco_map', auto_arm=True)
-    #     print('target approached')
+# print('target approached')
 
-    #     color = getcolor()
-    #     print("Coordinate: {}, {}; color: {}".format(map_x, map_y, color))
-
-    #     file.write("  {}     x={}, y={}     {}\n".format(i+1, map_x, map_y, color))
-
-    #     rospy.sleep(1)
-
-
-    navigate_wait(x=0, y = 0, z = 0.5, speed=1.0, frame_id='aruco_map', auto_arm=False)
-    navigate_wait(x=0, y = 0, z = 0.1, speed=1.0, frame_id='aruco_map', auto_arm=False)
-
-    print('target approached')
-
-    rospy.sleep(0.5)
-    
-    print('landing')
-    # Land
-    land()
-    print('drone has landed')
+# rospy.sleep(0.5)
+ 
+# print('landing')
+# # Land
+# land()
+# print('drone has landed')
 
     #file.close()

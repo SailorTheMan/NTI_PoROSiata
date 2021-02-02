@@ -1,5 +1,5 @@
 
-material aruco/marker_2_0
+material aruco/1
 {
     technique
     {
@@ -7,7 +7,7 @@ material aruco/marker_2_0
         {
             texture_unit
             {
-                texture aruco_marker_2_0.png
+                texture aruco_1.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -15,7 +15,7 @@ material aruco/marker_2_0
     }
 }
 
-material aruco/marker_2_1
+material aruco/2
 {
     technique
     {
@@ -23,7 +23,7 @@ material aruco/marker_2_1
         {
             texture_unit
             {
-                texture aruco_marker_2_1.png
+                texture aruco_2.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -31,7 +31,7 @@ material aruco/marker_2_1
     }
 }
 
-material aruco/marker_2_2
+material aruco/3
 {
     technique
     {
@@ -39,7 +39,7 @@ material aruco/marker_2_2
         {
             texture_unit
             {
-                texture aruco_marker_2_2.png
+                texture aruco_3.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -47,7 +47,7 @@ material aruco/marker_2_2
     }
 }
 
-material aruco/marker_2_3
+material aruco/4
 {
     technique
     {
@@ -55,7 +55,7 @@ material aruco/marker_2_3
         {
             texture_unit
             {
-                texture aruco_marker_2_3.png
+                texture aruco_4.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -63,7 +63,7 @@ material aruco/marker_2_3
     }
 }
 
-material aruco/marker_2_4
+material aruco/5
 {
     technique
     {
@@ -71,7 +71,7 @@ material aruco/marker_2_4
         {
             texture_unit
             {
-                texture aruco_marker_2_4.png
+                texture aruco_5.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -79,7 +79,7 @@ material aruco/marker_2_4
     }
 }
 
-material aruco/marker_2_5
+material aruco/6
 {
     technique
     {
@@ -87,7 +87,7 @@ material aruco/marker_2_5
         {
             texture_unit
             {
-                texture aruco_marker_2_5.png
+                texture aruco_6.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -95,7 +95,7 @@ material aruco/marker_2_5
     }
 }
 
-material aruco/marker_2_6
+material aruco/7
 {
     technique
     {
@@ -103,7 +103,7 @@ material aruco/marker_2_6
         {
             texture_unit
             {
-                texture aruco_marker_2_6.png
+                texture aruco_7.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -111,7 +111,7 @@ material aruco/marker_2_6
     }
 }
 
-material aruco/marker_2_7
+material aruco/8
 {
     technique
     {
@@ -119,7 +119,7 @@ material aruco/marker_2_7
         {
             texture_unit
             {
-                texture aruco_marker_2_7.png
+                texture aruco_8.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -127,7 +127,7 @@ material aruco/marker_2_7
     }
 }
 
-material aruco/marker_2_8
+material aruco/9
 {
     technique
     {
@@ -135,7 +135,7 @@ material aruco/marker_2_8
         {
             texture_unit
             {
-                texture aruco_marker_2_8.png
+                texture aruco_9.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -143,7 +143,7 @@ material aruco/marker_2_8
     }
 }
 
-material aruco/marker_2_9
+material aruco/10
 {
     technique
     {
@@ -151,7 +151,7 @@ material aruco/marker_2_9
         {
             texture_unit
             {
-                texture aruco_marker_2_9.png
+                texture aruco_10.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -159,7 +159,7 @@ material aruco/marker_2_9
     }
 }
 
-material aruco/marker_2_10
+material aruco/11
 {
     technique
     {
@@ -167,7 +167,7 @@ material aruco/marker_2_10
         {
             texture_unit
             {
-                texture aruco_marker_2_10.png
+                texture aruco_11.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -175,7 +175,7 @@ material aruco/marker_2_10
     }
 }
 
-material aruco/marker_2_11
+material aruco/12
 {
     technique
     {
@@ -183,7 +183,7 @@ material aruco/marker_2_11
         {
             texture_unit
             {
-                texture aruco_marker_2_11.png
+                texture aruco_12.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -191,7 +191,7 @@ material aruco/marker_2_11
     }
 }
 
-material aruco/marker_2_12
+material aruco/13
 {
     technique
     {
@@ -199,7 +199,7 @@ material aruco/marker_2_12
         {
             texture_unit
             {
-                texture aruco_marker_2_12.png
+                texture aruco_13.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -207,7 +207,7 @@ material aruco/marker_2_12
     }
 }
 
-material aruco/marker_2_13
+material aruco/14
 {
     technique
     {
@@ -215,7 +215,7 @@ material aruco/marker_2_13
         {
             texture_unit
             {
-                texture aruco_marker_2_13.png
+                texture aruco_14.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -223,7 +223,7 @@ material aruco/marker_2_13
     }
 }
 
-material aruco/marker_2_14
+material aruco/15
 {
     technique
     {
@@ -231,7 +231,7 @@ material aruco/marker_2_14
         {
             texture_unit
             {
-                texture aruco_marker_2_14.png
+                texture aruco_15.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -239,7 +239,7 @@ material aruco/marker_2_14
     }
 }
 
-material aruco/marker_2_15
+material aruco/16
 {
     technique
     {
@@ -247,7 +247,7 @@ material aruco/marker_2_15
         {
             texture_unit
             {
-                texture aruco_marker_2_15.png
+                texture aruco_16.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -255,7 +255,7 @@ material aruco/marker_2_15
     }
 }
 
-material aruco/marker_2_16
+material aruco/17
 {
     technique
     {
@@ -263,7 +263,7 @@ material aruco/marker_2_16
         {
             texture_unit
             {
-                texture aruco_marker_2_16.png
+                texture aruco_17.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -271,7 +271,7 @@ material aruco/marker_2_16
     }
 }
 
-material aruco/marker_2_18
+material aruco/18
 {
     technique
     {
@@ -279,7 +279,7 @@ material aruco/marker_2_18
         {
             texture_unit
             {
-                texture aruco_marker_2_18.png
+                texture aruco_18.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -287,7 +287,7 @@ material aruco/marker_2_18
     }
 }
 
-material aruco/marker_2_19
+material aruco/19
 {
     technique
     {
@@ -295,7 +295,7 @@ material aruco/marker_2_19
         {
             texture_unit
             {
-                texture aruco_marker_2_19.png
+                texture aruco_19.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -303,7 +303,7 @@ material aruco/marker_2_19
     }
 }
 
-material aruco/marker_2_20
+material aruco/20
 {
     technique
     {
@@ -311,7 +311,7 @@ material aruco/marker_2_20
         {
             texture_unit
             {
-                texture aruco_marker_2_20.png
+                texture aruco_20.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -319,7 +319,7 @@ material aruco/marker_2_20
     }
 }
 
-material aruco/marker_2_21
+material aruco/21
 {
     technique
     {
@@ -327,7 +327,7 @@ material aruco/marker_2_21
         {
             texture_unit
             {
-                texture aruco_marker_2_21.png
+                texture aruco_21.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -335,7 +335,7 @@ material aruco/marker_2_21
     }
 }
 
-material aruco/marker_2_22
+material aruco/22
 {
     technique
     {
@@ -343,7 +343,7 @@ material aruco/marker_2_22
         {
             texture_unit
             {
-                texture aruco_marker_2_22.png
+                texture aruco_22.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -351,7 +351,7 @@ material aruco/marker_2_22
     }
 }
 
-material aruco/marker_2_23
+material aruco/23
 {
     technique
     {
@@ -359,7 +359,7 @@ material aruco/marker_2_23
         {
             texture_unit
             {
-                texture aruco_marker_2_23.png
+                texture aruco_23.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -367,7 +367,7 @@ material aruco/marker_2_23
     }
 }
 
-material aruco/marker_2_24
+material aruco/24
 {
     technique
     {
@@ -375,7 +375,7 @@ material aruco/marker_2_24
         {
             texture_unit
             {
-                texture aruco_marker_2_24.png
+                texture aruco_24.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -383,7 +383,7 @@ material aruco/marker_2_24
     }
 }
 
-material aruco/marker_2_25
+material aruco/25
 {
     technique
     {
@@ -391,7 +391,7 @@ material aruco/marker_2_25
         {
             texture_unit
             {
-                texture aruco_marker_2_25.png
+                texture aruco_25.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -399,7 +399,7 @@ material aruco/marker_2_25
     }
 }
 
-material aruco/marker_2_26
+material aruco/26
 {
     technique
     {
@@ -407,7 +407,7 @@ material aruco/marker_2_26
         {
             texture_unit
             {
-                texture aruco_marker_2_26.png
+                texture aruco_26.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -415,7 +415,7 @@ material aruco/marker_2_26
     }
 }
 
-material aruco/marker_2_27
+material aruco/27
 {
     technique
     {
@@ -423,7 +423,7 @@ material aruco/marker_2_27
         {
             texture_unit
             {
-                texture aruco_marker_2_27.png
+                texture aruco_27.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -431,7 +431,7 @@ material aruco/marker_2_27
     }
 }
 
-material aruco/marker_2_28
+material aruco/28
 {
     technique
     {
@@ -439,7 +439,7 @@ material aruco/marker_2_28
         {
             texture_unit
             {
-                texture aruco_marker_2_28.png
+                texture aruco_28.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -447,7 +447,7 @@ material aruco/marker_2_28
     }
 }
 
-material aruco/marker_2_29
+material aruco/29
 {
     technique
     {
@@ -455,7 +455,7 @@ material aruco/marker_2_29
         {
             texture_unit
             {
-                texture aruco_marker_2_29.png
+                texture aruco_29.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -463,7 +463,7 @@ material aruco/marker_2_29
     }
 }
 
-material aruco/marker_2_30
+material aruco/30
 {
     technique
     {
@@ -471,7 +471,7 @@ material aruco/marker_2_30
         {
             texture_unit
             {
-                texture aruco_marker_2_30.png
+                texture aruco_30.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -479,7 +479,7 @@ material aruco/marker_2_30
     }
 }
 
-material aruco/marker_2_31
+material aruco/31
 {
     technique
     {
@@ -487,7 +487,7 @@ material aruco/marker_2_31
         {
             texture_unit
             {
-                texture aruco_marker_2_31.png
+                texture aruco_31.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -495,7 +495,7 @@ material aruco/marker_2_31
     }
 }
 
-material aruco/marker_2_32
+material aruco/32
 {
     technique
     {
@@ -503,7 +503,7 @@ material aruco/marker_2_32
         {
             texture_unit
             {
-                texture aruco_marker_2_32.png
+                texture aruco_32.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -511,7 +511,7 @@ material aruco/marker_2_32
     }
 }
 
-material aruco/marker_2_33
+material aruco/33
 {
     technique
     {
@@ -519,7 +519,7 @@ material aruco/marker_2_33
         {
             texture_unit
             {
-                texture aruco_marker_2_33.png
+                texture aruco_33.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -527,7 +527,7 @@ material aruco/marker_2_33
     }
 }
 
-material aruco/marker_2_34
+material aruco/34
 {
     technique
     {
@@ -535,7 +535,7 @@ material aruco/marker_2_34
         {
             texture_unit
             {
-                texture aruco_marker_2_34.png
+                texture aruco_34.png
                 filtering none
                 scale 1.0 1.0
             }
@@ -543,7 +543,7 @@ material aruco/marker_2_34
     }
 }
 
-material aruco/marker_2_35
+material aruco/35
 {
     technique
     {
@@ -551,7 +551,7 @@ material aruco/marker_2_35
         {
             texture_unit
             {
-                texture aruco_marker_2_35.png
+                texture aruco_35.png
                 filtering none
                 scale 1.0 1.0
             }

@@ -53,24 +53,9 @@ def get_target_from_barcode(barcodes):
 # Take off 1 meter
 navigate_wait(z=1, speed=1.0, frame_id='body', auto_arm=True)
 print('lifted off')
-navigate_wait(x=2, z=1, speed=1.0, frame_id='aruco_map', auto_arm=False)
+navigate_wait(x=4, y=6, z=1, speed=1.0, frame_id='aruco_map', auto_arm=False)
 print('target approached')
 
-for i in range(3):
-
-    while True:
-        img = bridge.imgmsg_to_cv2(rospy.wait_for_message('main_camera/image_raw', Image), 'bgr8')
-        barcodes = pyzbar.decode(img)
-        if len(barcodes) == 0: 
-            print('searching for QR codes...')
-            continue
-        break
-
-    map_x, map_y = get_target_from_barcode(barcodes)
-
-    navigate_wait(x=float(map_x), y=float(map_y), z=1, speed=1.0, frame_id='aruco_map', auto_arm=True)
-    print('target approached')
-    rospy.sleep(1)
 
 
 # Fly forward 1 m

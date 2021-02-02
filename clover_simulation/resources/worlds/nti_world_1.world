@@ -20,6 +20,12 @@
     </include>
 
     <include>
+      <name>blue_0</name>
+      <uri>model://blue</uri>
+      <pose>0 5.5 0 0 0 0</pose>
+    </include>
+
+    <include>
       <name>red_1</name>
       <uri>model://red</uri>
       <pose>3.5 0.5 0 0 0 0</pose>

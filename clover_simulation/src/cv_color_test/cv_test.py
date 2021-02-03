@@ -57,7 +57,9 @@ def count_cargo(img):
 
     blue_mask = cv2.inRange(hsv, blueLower, blueUpper)
     rgyb_counts.append(contour_counter(blue_mask))
-    print('rgyb:' + rgyb_counts)
+    print('Total: {0}'.format(sum(rgyb_counts)))
+    print('rgyb: {0}'.format(rgyb_counts))
+    
 
 
 if __name__ == '__main__':

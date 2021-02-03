@@ -24,7 +24,7 @@ def contour_counter(mask):
     for cnt in contours:
         area = cv2.contourArea(cnt)
         perimeter = cv2.arcLength(cnt, True)
-        if area > 200:
+        if area > 100:
             counter+=1
         print ("Chosen contour area: {}, Perimeter: {}".format(area, perimeter))
     return counter

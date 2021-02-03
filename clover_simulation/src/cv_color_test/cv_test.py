@@ -1,8 +1,5 @@
 import cv2
 import numpy as np
-import rospy
-from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
 
 def getContours(binary_image):      
     _, contours, hierarchy = cv2.findContours(binary_image, 
@@ -63,7 +60,7 @@ def count_cargo(img):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('cv_color_test/3.png') #4.jpg     3.png
+    image = cv2.imread('cv_color_test/5.jpg') #4.jpg     3.png
     count_cargo(image)
     #cv2.imshow("mask image r", red_mask)
     #cv2.imshow("mask image g", green_mask)

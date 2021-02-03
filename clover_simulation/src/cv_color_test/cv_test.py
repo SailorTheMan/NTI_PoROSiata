@@ -69,12 +69,12 @@ def count_cargo(img):
     print('Total: {0}'.format(sum(rgyb_counts)))
     print('rgyb: {0}'.format(rgyb_counts))
 
-    cv2.imshow("mask image r", red_mask)
-    cv2.imshow("mask image g", green_mask)
-    cv2.imshow("mask image y", yellow_mask)
-    cv2.imshow("mask image b", blue_mask)
+    #cv2.imshow("mask image r", red_mask)
+    #cv2.imshow("mask image g", green_mask)
+    #cv2.imshow("mask image y", yellow_mask)
+    #cv2.imshow("mask image b", blue_mask)
 
-    cv2.waitKey(0)
+    #cv2.waitKey(0)
     
 
 

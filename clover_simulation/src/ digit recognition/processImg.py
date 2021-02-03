@@ -129,6 +129,7 @@ if __name__ == '__main__':
 
     model = cv2.ml.KNearest_create()
     model.train(samples, cv2.ml.ROW_SAMPLE, responses)
+    print(model)
     print('Training done')
 
     contours = getContours(binary_image)

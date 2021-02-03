@@ -117,7 +117,7 @@ def process_contours(binary_image, rgb_image, contours, model):
     cv2.imshow("Black Image Contours",black_image)
 
 if __name__ == '__main__':
-    image_name = "three_2.png"
+    image_name = "/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/three_2.png"
     rgb_image = read_rgb_image(image_name, True)
     gray_image= convert_rgb_to_gray(rgb_image,True)
     binary_image = convert_gray_to_binary(gray_image, True, True)

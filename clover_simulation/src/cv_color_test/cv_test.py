@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+CROPP_DIM = 120
 
 def getContours(binary_image):      
     _, contours, hierarchy = cv2.findContours(binary_image, 
@@ -14,6 +15,14 @@ def draw_contours(image, contours, image_name):
     cv2.drawContours(image, contours, index, color, thickness)
     #cv2.imshow(image_name,image)
 
+def crop_detect(photo):
+    # cropping
+    cv2.imshow('orig', photo)
+    cv2.waitKey(0)
+    cropped_image = photo[60:180, 100:220].copy()
+    cv2.imshow('crop', cropped_image)
+    cv2.waitKey(0)
+
 def contour_counter(mask):
     blur =  cv2.blur(mask,(5,5))
     contours = getContours(blur)
@@ -27,11 +36,15 @@ def contour_counter(mask):
         if area > 100:
             counter+=1
         #print ("Chosen contour area: {}, Perimeter: {}".format(area, perimeter))
-    print('Largest area {0}'.format(largest_area))
+    #print('Largest area {0}'.format(largest_area))
     return counter
 
 def count_cargo(img):
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    y = 120-CROPP_DIM/2
+    x = 160-CROPP_DIM/2
+
+    cropped_image = img[y:y+CROPP_DIM, x:x+CROPP_DIM].copy()
+    hsv = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2HSV)
 
     #redLower = np.array((0, 42, 122), np.uint8) 
     #redUpper = np.array((14, 141, 209), np.uint8) 
@@ -54,20 +67,30 @@ def count_cargo(img):
     #blueUpper = (103, 225, 163)
 
     rgyb_counts = []
-
+    cargo_type = 'NONE'
     red_mask = cv2.inRange(hsv, redLower, redUpper)
-    rgyb_counts.append(contour_counter(red_mask))
-
+    #rgyb_counts.append(contour_counter(red_mask))
+    if (contour_counter(red_mask)):
+        cargo_type = 'RED'
+    
     green_mask = cv2.inRange(hsv, greenLower, greenUpper)
-    rgyb_counts.append(contour_counter(green_mask))
+    #rgyb_counts.append(contour_counter(green_mask))
+    if (contour_counter(green_mask)):
+        cargo_type = 'GREEN'
 
     yellow_mask = cv2.inRange(hsv, yellowLower, yellowUpper)
     rgyb_counts.append(contour_counter(yellow_mask))
 
     blue_mask = cv2.inRange(hsv, blueLower, blueUpper)
     rgyb_counts.append(contour_counter(blue_mask))
-    print('Total: {0}'.format(sum(rgyb_counts)))
-    print('rgyb: {0}'.format(rgyb_counts))
+    print('Cargo: ' + cargo_type)
+    if (cargo_type != 'NONE'):
+        return (1, cargo_type)
+    else: 
+        return 0
+
+    #print('Total: {0}'.format(sum(rgyb_counts)))
+    #print('rgyb: {0}'.format(rgyb_counts))
 
     #cv2.imshow("mask image r", red_mask)
     #cv2.imshow("mask image g", green_mask)
@@ -79,5 +102,5 @@ def count_cargo(img):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/cv_color_test/cv_debug.png') #4.jpg     3.png
+    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/cv_color_test/5.jpg') #4.jpg     3.png
     count_cargo(image)

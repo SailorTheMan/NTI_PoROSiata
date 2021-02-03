@@ -15,7 +15,7 @@ def draw_contours(image, contours, image_name):
     thickness = 2 #thinkess of the contour line
     color = (255, 0, 255) #color of the contour line
     cv2.drawContours(image, contours, index, color, thickness)
-    cv2.imshow(image_name,image)
+    #cv2.imshow(image_name,image)
 
 def contour_counter(mask):
     blur =  cv2.blur(mask,(5,5))
@@ -24,52 +24,48 @@ def contour_counter(mask):
     for cnt in contours:
         area = cv2.contourArea(cnt)
         perimeter = cv2.arcLength(cnt, True)
-        if area > 200:
+        if area > 100:
             counter+=1
         print ("Chosen contour area: {}, Perimeter: {}".format(area, perimeter))
     return counter
 
+def count_cargo(img):
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-bridge = CvBridge()
-rospy.sleep(1)
-img = bridge.imgmsg_to_cv2(rospy.wait_for_message('main_camera/image_raw', Image), 'bgr8')
-#img = cv2.imread('cv_color_test/3.png') #4.jpg     3.png
+    redLower = np.array((0, 42, 122), np.uint8) 
+    redUpper = np.array((14, 141, 209), np.uint8) 
 
-#gray_image= convert_rgb_to_gray(rgb_image,True)
-#binary_image = convert_gray_to_binary(gray_image, True, True)
+    greenLower = (52, 73, 118)
+    greenUpper = (70, 162, 160)
 
-hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    yellowLower = (29, 110, 112)
+    yellowUpper = (37, 199, 225)
 
-redLower = np.array((0, 42, 122), np.uint8) 
-redUpper = np.array((14, 141, 209), np.uint8) 
+    blueLower = (90, 84, 80)
+    blueUpper = (103, 225, 163)
 
-greenLower = (52, 73, 118)
-greenUpper = (70, 162, 160)
+    rgyb_counts = []
 
-yellowLower = (29, 110, 112)
-yellowUpper = (37, 199, 225)
+    red_mask = cv2.inRange(hsv, redLower, redUpper)
+    rgyb_counts.append(contour_counter(red_mask))
 
-blueLower = (90, 84, 80)
-blueUpper = (103, 225, 163)
+    green_mask = cv2.inRange(hsv, greenLower, greenUpper)
+    rgyb_counts.append(contour_counter(green_mask))
 
-rgyb_counts = []
+    yellow_mask = cv2.inRange(hsv, yellowLower, yellowUpper)
+    rgyb_counts.append(contour_counter(yellow_mask))
 
-red_mask = cv2.inRange(hsv, redLower, redUpper)
-rgyb_counts.append(contour_counter(red_mask))
+    blue_mask = cv2.inRange(hsv, blueLower, blueUpper)
+    rgyb_counts.append(contour_counter(blue_mask))
+    print('rgyb:' + rgyb_counts)
 
-green_mask = cv2.inRange(hsv, greenLower, greenUpper)
-rgyb_counts.append(contour_counter(green_mask))
 
-yellow_mask = cv2.inRange(hsv, yellowLower, yellowUpper)
-rgyb_counts.append(contour_counter(yellow_mask))
+if __name__ == '__main__':
+    image = cv2.imread('cv_color_test/3.png') #4.jpg     3.png
+    count_cargo(image)
+    #cv2.imshow("mask image r", red_mask)
+    #cv2.imshow("mask image g", green_mask)
+    #cv2.imshow("mask image y", yellow_mask)
+    #cv2.imshow("mask image b", blue_mask)
 
-blue_mask = cv2.inRange(hsv, blueLower, blueUpper)
-rgyb_counts.append(contour_counter(blue_mask))
-print('rgyb:' + rgyb_counts)
-
-cv2.imshow("mask image r", red_mask)
-cv2.imshow("mask image g", green_mask)
-cv2.imshow("mask image y", yellow_mask)
-cv2.imshow("mask image b", blue_mask)
-
-cv2.waitKey(0)
+    #cv2.waitKey(0)

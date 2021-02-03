@@ -20,7 +20,7 @@ cv2.createTrackbar('v2', 'settings', 255, 255, nothing)
 crange = [0,0,0, 0,0,0]
 
 while True:
-    img = cv2.imread('/home/clover/Desktop/cv_test/3.png')
+    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/cv_color_test/cv_debug.png')
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV )
  
     #

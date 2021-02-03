@@ -5,7 +5,7 @@ import math
 import rospy
 import cv2
 from clover import srv
-from pyzbar import pyzbar
+#from pyzbar import pyzbar
 from cv_bridge import CvBridge
 from std_srvs.srv import Trigger
 from sensor_msgs.msg import Image

@@ -20,8 +20,7 @@ BLUE_BOUNDS = (10, 15) #check bounds
 GREEN_BOUNDS = (55, 65)
 
 
-def getcolor():
-    
+def getcolor():   
     img = bridge.imgmsg_to_cv2(rospy.wait_for_message('main_camera/image_raw', Image), 'bgr8')
     cv2.imshow('img', img)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -95,44 +94,55 @@ def detect_products():
     rospy.sleep(2)
 
 
+    #count all marks and colours, write report
 
-rospy.init_node('flight')
+def detect_dronepoints():
 
-get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
-navigate = rospy.ServiceProxy('navigate', srv.Navigate)
-navigate_global = rospy.ServiceProxy('navigate_global', srv.NavigateGlobal)
-set_position = rospy.ServiceProxy('set_position', srv.SetPosition)
-set_velocity = rospy.ServiceProxy('set_velocity', srv.SetVelocity)
-set_attitude = rospy.ServiceProxy('set_attitude', srv.SetAttitude)
-set_rates = rospy.ServiceProxy('set_rates', srv.SetRates)
-land = rospy.ServiceProxy('land', Trigger)
+    #find coordinates of the dronepoints
 
-bridge = CvBridge()
+    #read numbers
+    pass
 
-# Take off to safe height 
-navigate_wait(z=SAFE_HEIGHT, speed=SPEED, frame_id='body', auto_arm=True)
-print('lifted off')
 
-detect_products()
+def dronepoints_processing():
+    #land on dronepoint
 
-# coordinates = [[0, 2.5], [3.5, 0.5], [2, 1.5], [3.5, 3.5]]
-# file = open("report.txt", "w") 
-# file.write("Number  Coordinates   Color\n")
+    #unload cargo
 
-# for i in range(4):
+    #again
+    pass
+    
 
-#     map_x, map_y = coordinates[i]
-#     print(map_x, map_y)
-#     navigate_wait(x=float(map_x), y=float(map_y), z=0.5, speed=1.0, frame_id='aruco_map', auto_arm=True)
-#     print('target approached')
+if __name__ == "__main__":
+    
+    #initialization
+    rospy.init_node('flight')
 
-#     color = getcolor()
-#     print("Coordinate: {}, {}; color: {}".format(map_x, map_y, color))
+    get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
+    navigate = rospy.ServiceProxy('navigate', srv.Navigate)
+    navigate_global = rospy.ServiceProxy('navigate_global', srv.NavigateGlobal)
+    set_position = rospy.ServiceProxy('set_position', srv.SetPosition)
+    set_velocity = rospy.ServiceProxy('set_velocity', srv.SetVelocity)
+    set_attitude = rospy.ServiceProxy('set_attitude', srv.SetAttitude)
+    set_rates = rospy.ServiceProxy('set_rates', srv.SetRates)
+    land = rospy.ServiceProxy('land', Trigger)
 
-#     file.write("  {}     x={}, y={}     {}\n".format(i+1, map_x, map_y, color))
+    bridge = CvBridge()
 
-#     rospy.sleep(1)
+    # Take off to the safe height 
+    navigate_wait(z=SAFE_HEIGHT, speed=SPEED, frame_id='body', auto_arm=True)
+    print('lifted off')
 
+    detect_products()       #does not 'detect' at this point
+
+    detect_dronepoints()
+
+    dronepoints_processing()
+
+
+    # coordinates = [[0, 2.5], [3.5, 0.5], [2, 1.5], [3.5, 3.5]]
+    # file = open("report.txt", "w") 
+    # file.write("Number  Coordinates   Color\n")
 
 # navigate_wait(x=0, y = 0, z = SAFE_HEIGHT, speed=SPEED, frame_id='aruco_map', auto_arm=False)
 # navigate_wait(x=0, y = 0, z = 0.1, speed=SPEED, frame_id='aruco_map', auto_arm=False)
@@ -146,4 +156,4 @@ detect_products()
 # land()
 # print('drone has landed')
 
-#file.close()
+    #file.close()

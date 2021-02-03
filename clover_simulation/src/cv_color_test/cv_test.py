@@ -14,6 +14,14 @@ def draw_contours(image, contours, image_name):
     cv2.drawContours(image, contours, index, color, thickness)
     #cv2.imshow(image_name,image)
 
+def crop_detect(photo):
+    # cropping
+    cv2.imshow('orig', photo)
+    cv2.waitKey(0)
+    cropped_image = photo[60:180, 100:220].copy()
+    cv2.imshow('crop', cropped_image)
+    cv2.waitKey(0)
+
 def contour_counter(mask):
     blur =  cv2.blur(mask,(5,5))
     contours = getContours(blur)

@@ -1,5 +1,8 @@
 import numpy as np
 import cv2
+from cv2 import aruco
+
+CROPP_DIM = 120
 
 ###          HOW TO USE          ###
 # Call  recognize_digit([rgb_photo])
@@ -12,11 +15,13 @@ def compute_weight(file_path, photo, orb):
                             255, 
                             cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
                             cv2.THRESH_BINARY_INV, 151, 2)
-    img2 = photo
+    ##### TODO: Use skeletons to compare features?
+    img2 = cv2.cvtColor(photo, cv2.COLOR_BGR2GRAY)
     img2 = cv2.adaptiveThreshold(img2, 
                             255, 
                             cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
                             cv2.THRESH_BINARY_INV, 151, 2)
+
 
     '''### SHAPE MATCHING TEST ####
     _, contours,hierarchy = cv2.findContours(img1,2,1)
@@ -67,8 +72,63 @@ def recognize_digit(photo):
     #print(weights.values())
     return(min(weights, key=weights.get))
 
+def detect_marker(photo):
+    #Load the dictionary that was used to generate the markers.
+    dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
+    # Initialize the detector parameters using default values
+    parameters =  cv2.aruco.DetectorParameters_create()
+    # Detect the markers in the image
+    markerCorners, markerIds, rejectedCandidates = cv2.aruco.detectMarkers(photo, dictionary, parameters=parameters)
+    #plt.imshow(markerCorners)
+    print(rejectedCandidates)
+
+def is_anything_green(image):
+    img = np.array(image, dtype=np.uint8)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    is_green = False
+    #greenLower = (52, 73, 118)
+    #greenUpper = (70, 162, 160)
+    greenLower = (52, 60, 66)
+    greenUpper = (79, 138, 101)
+    green_mask = cv2.inRange(hsv, greenLower, greenUpper)
+    #cv2.imshow("mask", green_mask)
+    print(sum(sum(green_mask)))
+    if (sum(sum(green_mask)) > 8000):
+        is_green = True
+    
+    return is_green
+
+
+
+def analyze_frame(photo):
+    y = 120-CROPP_DIM/2
+    x = 160-CROPP_DIM/2
+    
+    cropped_image = photo[y:y+CROPP_DIM, x:x+CROPP_DIM].copy()
+    gray_crop  = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+    ## TODO Check if an Aruco marker is underneath
+    #detect_marker(cropped_image)
+
+    binary = cv2.adaptiveThreshold(gray_crop, 
+                        255, 
+                        cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+                        cv2.THRESH_BINARY, 151, 2)
+    _, contours,hierarchy = cv2.findContours(binary,2,1)
+    max_area = 0
+    for cnt in contours:
+        cnt_area = cv2.contourArea(cnt)
+        if cnt_area > max_area:
+            max_area = cnt_area
+    print(max_area)
+
+    if max_area > 5000 and is_anything_green(cropped_image):
+        print(recognize_digit(cropped_image))
+    else: 
+        print('Seems empty')
+
+
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
-    img = cv2.imread(' digit recognition/rect_2.png',0)   
-    
-    print recognize_digit(img)
+    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/vegs_arucoN.png')   #TODO: FIX PATHS
+    analyze_frame(img)
+    #print recognize_digit(img)

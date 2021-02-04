@@ -46,8 +46,8 @@ def count_cargo(img):
     cropped_image = img[y:y+CROPP_DIM, x:x+CROPP_DIM].copy()
     hsv = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2HSV)
 
-    redLower = np.array((0, 42, 122), np.uint8) 
-    redUpper = np.array((14, 141, 209), np.uint8) 
+    redLower = np.array((147, 65, 108), np.uint8) 
+    redUpper = np.array((243, 150, 254), np.uint8) 
     # redLower = np.array((169, 60, 167), np.uint8) 
     # redUpper = np.array((180, 123, 211), np.uint8) 
 
@@ -106,5 +106,5 @@ def count_cargo(img):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/cv_3.png') #4.jpg     3.png
+    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/cv_31.png') #4.jpg     3.png
     count_cargo(image)

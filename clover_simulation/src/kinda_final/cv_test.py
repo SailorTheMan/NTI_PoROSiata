@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-CROPP_DIM = 100
+CROPP_DIM = 60
 
 def getContours(binary_image):      
     _, contours, hierarchy = cv2.findContours(binary_image, 
@@ -63,8 +63,8 @@ def count_cargo(img):
 
     # blueLower = (106, 64, 145)
     # blueUpper = (110, 110, 170)
-    blueLower = (60, 85, 115)
-    blueUpper = (131, 209, 255)
+    blueLower = (91, 92, 136)
+    blueUpper = (120, 209, 200)
 
     rgyb_counts = []
     cargo_type = 'NONE'

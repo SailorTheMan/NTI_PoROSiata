@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-from cv2 import aruco
 import os
 
 CROPP_DIM = 120
@@ -10,7 +9,6 @@ CROPP_DIM = 120
 # Returned value is recognized digit
 
 def compute_weight(file_path, photo, orb):
-    
     img1 = cv2.imread(file_path,0)          # queryImage
     img1 = cv2.adaptiveThreshold(img1, 
                             255, 
@@ -108,7 +106,7 @@ def is_anything_green(image):
 def analyze_frame(photo):
     y = 120-CROPP_DIM/2
     x = 160-CROPP_DIM/2
-    
+    photo = cv2.rotate(photo, cv2.ROTATE_90_CLOCKWISE)
     cropped_image = photo[y:y+CROPP_DIM, x:x+CROPP_DIM].copy()
     gray_crop  = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
     ## TODO Check if an Aruco marker is underneath
@@ -136,6 +134,6 @@ def analyze_frame(photo):
 
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
-    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/vegs_arucoN.png')   #TODO: FIX PATHS
-    analyze_frame(img)
+    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/vegs_aruco.png')   #TODO: FIX PATHS
+    print analyze_frame(img)
     #print recognize_digit(img)

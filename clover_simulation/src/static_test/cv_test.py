@@ -79,11 +79,11 @@ def count_cargo(img):
         cargo_type = 'GREEN'
 
     yellow_mask = cv2.inRange(hsv, yellowLower, yellowUpper)
-    if (contour_counter(green_mask)):
+    if (contour_counter(yellow_mask)):
         cargo_type = 'YELLOW'
 
     blue_mask = cv2.inRange(hsv, blueLower, blueUpper)
-    if (contour_counter(green_mask)):
+    if (contour_counter(blue_mask)):
         cargo_type = 'BLUE'
 
     print('Cargo: ' + cargo_type)

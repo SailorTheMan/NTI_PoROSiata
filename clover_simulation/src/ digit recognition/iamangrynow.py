@@ -64,7 +64,7 @@ def recognize_digit(photo):
     # Initiate SIFT detector
     orb = cv2.ORB_create()      #     TODO:     |
     weights = {}                #  FIX THIS     V
-    weights[0] = compute_weight(' digit recognition/rect_zero.png', photo, orb)
+    weights[0] = compute_weight(' digit recognition/new_zero.png', photo, orb)
     weights[1] = compute_weight(' digit recognition/new_one.png', photo, orb)
     weights[2] = compute_weight(' digit recognition/new_two.png', photo, orb)
     weights[3] = compute_weight(' digit recognition/new_three.png', photo, orb)
@@ -128,6 +128,6 @@ def analyze_frame(photo):
 
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
-    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/zero.jpg')   #TODO: FIX PATHS
+    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/three_1.png')  
     analyze_frame(img)
     #print recognize_digit(img)

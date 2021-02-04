@@ -51,8 +51,8 @@ def count_cargo(img):
     # redLower = np.array((169, 60, 167), np.uint8) 
     # redUpper = np.array((180, 123, 211), np.uint8) 
 
-    greenLower = (52, 73, 118)
-    greenUpper = (70, 162, 160)
+    greenLower = (51, 29, 112)
+    greenUpper = (86, 217, 255)
     # greenLower = (66, 29, 131)
     # greenUpper = (90, 80, 189)
 
@@ -106,5 +106,5 @@ def count_cargo(img):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/cv_31.png') #4.jpg     3.png
+    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/21.png') #4.jpg     3.png
     count_cargo(image)

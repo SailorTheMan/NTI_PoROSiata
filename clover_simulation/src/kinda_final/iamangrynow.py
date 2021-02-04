@@ -124,6 +124,8 @@ def analyze_frame(photo):
             max_area = cnt_area
     print(max_area)
 
+
+
     if max_area > 5000 and is_anything_green(cropped_image):
         return recognize_digit(cropped_image)
     else: 
@@ -134,6 +136,6 @@ def analyze_frame(photo):
 
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
-    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/vegs_aruco.png')   #TODO: FIX PATHS
+    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/dps/dps_3_1.png')  
     print analyze_frame(img)
     #print recognize_digit(img)

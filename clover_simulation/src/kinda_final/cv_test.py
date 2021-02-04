@@ -106,5 +106,5 @@ def count_cargo(img):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/15.png') #4.jpg     3.png
+    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/cv_31.png') #4.jpg     3.png
     count_cargo(image)

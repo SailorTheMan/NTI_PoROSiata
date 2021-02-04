@@ -22,38 +22,15 @@ import iamangrynow
 # UNCOMMENT FOR PROD
 ##################
 
-# __INVENTARIZATION = True
-# __DP_DETECTION = True
-# __DELIVERING = True
-# __SIM = False
-
-# __DOUBLE_CHECK = True
-
-# __DEBUG_DP = False
-# __DEBUG_DPS = [(1, 1, 0), (3, 1, 2)]
-
-
-# SAFE_HEIGHT = 2.5
-# SPEED = 0.8
-# CAM_HEIGHT = 280
-# CAM_WIDTH = 320
-# TOLERANCE = 20
-# KX = 0.01
-# KY = 0.01
-# DEFAULT_ANGLE = 0
-# DELIVERY_SPEED = 0.5
-# INVENT_HEIGHT = 0.5
-# DP_DETECT_HEIGHT = 2.0
-
 __INVENTARIZATION = False
-__DP_DETECTION = True
+__DP_DETECTION = False
 __DELIVERING = True
-__SIM = True
+__SIM = False
 
-__DOUBLE_CHECK = True
+__DOUBLE_CHECK = False
 
-__DEBUG_DP = False
-__DEBUG_DPS = [(1, 1, 0), (3, 1, 2)]
+__DEBUG_DP = True
+__DEBUG_DPS = [(1, 3, 2), (3, 0, 3)]
 
 
 SAFE_HEIGHT = 2.5
@@ -64,9 +41,32 @@ TOLERANCE = 20
 KX = 0.01
 KY = 0.01
 DEFAULT_ANGLE = 0
-DELIVERY_SPEED = 0.5
+DELIVERY_SPEED = 0.8
 INVENT_HEIGHT = 1.0
-DP_DETECT_HEIGHT = 2.5
+DP_DETECT_HEIGHT = 2.0
+
+# __INVENTARIZATION = False
+# __DP_DETECTION = True
+# __DELIVERING = True
+# __SIM = True
+
+# __DOUBLE_CHECK = True
+
+# __DEBUG_DP = False
+# __DEBUG_DPS = [(1, 1, 0), (3, 1, 2)]
+
+
+# SAFE_HEIGHT = 2.5
+# SPEED = 1.0
+# CAM_HEIGHT = 280
+# CAM_WIDTH = 320
+# TOLERANCE = 20
+# KX = 0.01
+# KY = 0.01
+# DEFAULT_ANGLE = 0
+# DELIVERY_SPEED = 0.5
+# INVENT_HEIGHT = 1.0
+# DP_DETECT_HEIGHT = 2.5
 
 RECT = [0, 0, 0, 0]
 
@@ -126,7 +126,6 @@ def land_dpoint():
 
     def center_the_rect():
         take_picture('cv_image2.png')
-        print(RECT)
         while RECT[2] == 0 or RECT[3] == 0:
             print('rect is null')
             navigate_wait(x=0.0, y=0.0, z=-0.05, speed=0.05, frame_id='body')
@@ -199,7 +198,7 @@ def goDetectDP():
         if i % 2 == 0:
             for j in range(5):
                 navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT, frame_id='aruco_map')
-                rospy.sleep(1)
+                rospy.sleep(0.5)
                 # REMOVE BEFORE DEPLOY
                 #continue
                 ######################
@@ -216,7 +215,7 @@ def goDetectDP():
 
                 if __DOUBLE_CHECK:
                     navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT-0.5, frame_id='aruco_map')
-                    rospy.sleep(1)
+                    rospy.sleep(0.5)
                     # REMOVE BEFORE DEPLOY
                     #continue
                     ######################
@@ -225,7 +224,7 @@ def goDetectDP():
         else:
             for j in range(4, -1, -1):
                 navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT, frame_id='aruco_map')
-                rospy.sleep(1)
+                rospy.sleep(0.5)
                 # REMOVE BEFORE DEPLOY
                 #continue
                 ######################
@@ -242,7 +241,7 @@ def goDetectDP():
 
                 if __DOUBLE_CHECK:
                     navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT - 0.5, frame_id='aruco_map')
-                    rospy.sleep(1)
+                    rospy.sleep(0.5)
                     # REMOVE BEFORE DEPLOY
                     #continue
                     ######################
@@ -334,40 +333,32 @@ if __INVENTARIZATION:
             if j == 4:
                 continue
             navigate_wait(x=j * 0.9 + 0.45, y= (6 - i) * 0.9 , z=INVENT_HEIGHT, frame_id='aruco_map')
-            rospy.sleep(1)
-            print('cv_test calling')
+            rospy.sleep(0.5)
             img = take_picture(invent_path + 'cv_' + str(title) + '.png')
             title += 1
             detect(img)
-            print('cv_test is done')
 
             if __DOUBLE_CHECK:
                 navigate_wait(x=j * 0.9 + 0.45, y= (6 - i) * 0.9 , z=INVENT_HEIGHT - 0.5, frame_id='aruco_map')
-                rospy.sleep(1)
-                print('cv_test calling')
+                rospy.sleep(0.5)
                 img = take_picture(invent_path + 'cv_' + str(title) + '.png')
                 title += 1
                 detect(img)
-                print('cv_test is done')
 
         if i != ROWS - 1:
             for j in range(8, -1, -1):
                 navigate_wait(x=j * 0.45, y= (6 - i) * 0.9 - 0.45, z=INVENT_HEIGHT, frame_id='aruco_map')
-                rospy.sleep(1)
-                print('cv_test calling')
+                rospy.sleep(0.5)
                 img = take_picture(invent_path + str(title) + '.png')
                 title += 1
                 detect(img)
-                print('cv_test is done')
 
                 if __DOUBLE_CHECK:
                     navigate_wait(x=j * 0.45, y= (6 - i) * 0.9 - 0.45, z=INVENT_HEIGHT -0.5, frame_id='aruco_map')
-                    rospy.sleep(1)
-                    print('cv_test calling')
+                    rospy.sleep(0.5)
                     img = take_picture(invent_path + str(title) + '.png')
                     title += 1
                     detect(img)
-                    print('cv_test is done')
         
     for cargo in cargos:
         balance +=  cargo[0]
@@ -416,7 +407,7 @@ if __DELIVERING and dpoints:
             navigate_wait(x=0.9 * dpoint[0], y=0.9 * dpoint[1], z=1.5, speed=DELIVERY_SPEED, frame_id='aruco_map')
             rospy.sleep(2)
             navigate_wait(x=0.9 * dpoint[0], y=0.9 * dpoint[1], z=0.4, speed=DELIVERY_SPEED, frame_id='aruco_map')
-        rospy.sleep(5)
+        rospy.sleep(3)
 
         print('ready to land')
 

@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-CROPP_DIM = 120
+CROPP_DIM = 100
 
 def getContours(binary_image):      
     _, contours, hierarchy = cv2.findContours(binary_image, 
@@ -56,8 +56,8 @@ def count_cargo(img):
     # greenLower = (66, 29, 131)
     # greenUpper = (90, 80, 189)
 
-    yellowLower = (29, 110, 112)
-    yellowUpper = (37, 199, 225)
+    yellowLower = (27, 70, 70)
+    yellowUpper = (62, 150, 240)
     # yellowLower = (22, 47, 176)
     # yellowUpper = (39, 104, 231)
 
@@ -86,6 +86,9 @@ def count_cargo(img):
     if (contour_counter(blue_mask)):
         cargo_type = 'BLUE'
 
+    if __name__ == '__main__':
+        cv2.imshow("crop", cropped_image)
+        cv2.waitKey(0)
     print('Cargo: ' + cargo_type)
     if (cargo_type != 'NONE'):
         return (1, cargo_type)
@@ -98,12 +101,10 @@ def count_cargo(img):
     #cv2.imshow("mask image r", red_mask)
     #cv2.imshow("mask image g", green_mask)
     #cv2.imshow("mask image y", yellow_mask)
-    #cv2.imshow("mask image b", blue_mask)
-
-    #cv2.waitKey(0)
+    
     
 
 
 if __name__ == '__main__':
-    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/cv_color_test/5.jpg') #4.jpg     3.png
+    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/cv_3.png') #4.jpg     3.png
     count_cargo(image)

@@ -63,8 +63,8 @@ def count_cargo(img):
 
     # blueLower = (106, 64, 145)
     # blueUpper = (110, 110, 170)
-    blueLower = (90, 84, 80)
-    blueUpper = (103, 225, 163)
+    blueLower = (60, 85, 115)
+    blueUpper = (131, 209, 255)
 
     rgyb_counts = []
     cargo_type = 'NONE'
@@ -106,5 +106,5 @@ def count_cargo(img):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/21.png') #4.jpg     3.png
+    image = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/images_testflight/invent/15.png') #4.jpg     3.png
     count_cargo(image)

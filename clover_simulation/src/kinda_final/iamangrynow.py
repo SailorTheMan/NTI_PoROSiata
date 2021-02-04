@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from cv2 import aruco
+import os
 
 CROPP_DIM = 120
 
@@ -65,10 +66,14 @@ def recognize_digit(photo):
     # Initiate SIFT detector
     orb = cv2.ORB_create()      #     TODO:     |
     weights = {}                #  FIX THIS     V
-    weights[0] = compute_weight(' digit recognition/new_zero.png', photo, orb)
-    weights[1] = compute_weight(' digit recognition/new_one.png', photo, orb)
-    weights[2] = compute_weight(' digit recognition/new_two.png', photo, orb)
-    weights[3] = compute_weight(' digit recognition/new_three.png', photo, orb)
+    path = os.path.abspath(__file__)
+    print(path)
+    path = path.rstrip('iamangrynow.pyc') + 'digit_recognition/'
+    print(path)
+    weights[0] = compute_weight(path + 'new_zero.png', photo, orb)
+    weights[1] = compute_weight(path + 'new_one.png', photo, orb)
+    weights[2] = compute_weight(path + 'new_two.png', photo, orb)
+    weights[3] = compute_weight(path + 'new_three.png', photo, orb)
     #print(weights.values())
     return(min(weights, key=weights.get))
 

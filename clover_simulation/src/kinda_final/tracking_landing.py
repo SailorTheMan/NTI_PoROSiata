@@ -2,6 +2,7 @@
 
 import os
 import errno
+import sys
 import math
 import rospy
 import threading
@@ -17,10 +18,42 @@ import cv_test
 from mavros_msgs.srv import CommandBool
 import iamangrynow
 
+###################
+# UNCOMMENT FOR PROD
+##################
+
+# __INVENTARIZATION = True
+# __DP_DETECTION = True
+# __DELIVERING = True
+# __SIM = False
+
+# __DOUBLE_CHECK = True
+
+# __DEBUG_DP = False
+# __DEBUG_DPS = [(1, 1, 0), (3, 1, 2)]
+
+
+# SAFE_HEIGHT = 2.5
+# SPEED = 0.8
+# CAM_HEIGHT = 280
+# CAM_WIDTH = 320
+# TOLERANCE = 20
+# KX = 0.01
+# KY = 0.01
+# DEFAULT_ANGLE = 0
+# DELIVERY_SPEED = 0.5
+# INVENT_HEIGHT = 0.5
+# DP_DETECT_HEIGHT = 2.0
+
 __INVENTARIZATION = False
 __DP_DETECTION = True
 __DELIVERING = True
 __SIM = True
+
+__DOUBLE_CHECK = True
+
+__DEBUG_DP = False
+__DEBUG_DPS = [(1, 1, 0), (3, 1, 2)]
 
 
 SAFE_HEIGHT = 2.5
@@ -33,7 +66,7 @@ KY = 0.01
 DEFAULT_ANGLE = 0
 DELIVERY_SPEED = 0.5
 INVENT_HEIGHT = 1.0
-DP_DETECT_HEIGHT = 2.0
+DP_DETECT_HEIGHT = 2.5
 
 RECT = [0, 0, 0, 0]
 
@@ -110,7 +143,7 @@ def land_dpoint():
         d_y = y_c - cam_y_c
         print(str(d_x * KX) + ' ' + str(-d_y * KY))
         
-        navigate(y= -d_x * KX, x= -d_y * KY, z = 0.0, frame_id='body', speed=0.05) 
+        navigate(y= -d_x * KX, x= -d_y * KY, z = 0.0, frame_id='body', speed=0.01) 
         print('navigating', RECT)
         first_loop = True
         while not rospy.is_shutdown():
@@ -121,7 +154,7 @@ def land_dpoint():
             d_x = x_c - cam_x_c
             d_y = y_c - cam_y_c
 
-            if (math.sqrt(telem.x ** 2 + telem.y ** 2 + telem.z ** 2) < 0.05) or ((math.sqrt((d_x)**2 + (d_y)**2) > 100) and not first_loop):
+            if (math.sqrt(telem.x ** 2 + telem.y ** 2 + telem.z ** 2) < 0.05) or ((math.sqrt((d_x)**2 + (d_y)**2) > 50) and not first_loop):
                 center_the_rect()
 
             if math.sqrt((d_x)**2 + (d_y)**2) > TOLERANCE:
@@ -151,7 +184,8 @@ def land_dpoint():
     while True:
         telem = get_telemetry()
         if old_telem.z - telem.z < 0.01:
-            arming(False)
+            if not __SIM:
+                arming(False)
             break
         old_telem = telem
         rospy.sleep(0.1)
@@ -161,7 +195,7 @@ def land_dpoint():
 def goDetectDP():
     print('detecting dronepoints')
     dps = []
-    for i in range(5):
+    for i in range(4, -1, -1):
         if i % 2 == 0:
             for j in range(5):
                 navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT, frame_id='aruco_map')
@@ -179,6 +213,15 @@ def goDetectDP():
                     dps.append((j, i, 2))
                 elif res == 3:
                     dps.append((j, i, 3))
+
+                if __DOUBLE_CHECK:
+                    navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT-0.5, frame_id='aruco_map')
+                    rospy.sleep(1)
+                    # REMOVE BEFORE DEPLOY
+                    #continue
+                    ######################
+                    img = take_picture(dps_path + 'dps_' + str(i) + '_' + str(j) + '_0.5' + '.png')
+                    res = iamangrynow.recognize_digit(img)
         else:
             for j in range(4, -1, -1):
                 navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT, frame_id='aruco_map')
@@ -196,6 +239,15 @@ def goDetectDP():
                     dps.append((j, i, 2))
                 elif res == 3:
                     dps.append((j, i, 3))
+
+                if __DOUBLE_CHECK:
+                    navigate_wait(x=j * 0.9, y=i * 0.9, z = DP_DETECT_HEIGHT - 0.5, frame_id='aruco_map')
+                    rospy.sleep(1)
+                    # REMOVE BEFORE DEPLOY
+                    #continue
+                    ######################
+                    img = take_picture(dps_path + 'dps_' + str(i) + '_' + str(j)+ '0.5' + '.png')
+                    res = iamangrynow.recognize_digit(img)
     return dps
 
 
@@ -244,13 +296,15 @@ bridge = CvBridge()
 #                         TAKE OFF
 #################################################################
 
-navigate_wait(z=1.0, frame_id='body', auto_arm=True)
+navigate_wait(z=2.0, frame_id='body', auto_arm=True)
 print('lifted off')
+navigate_wait(x= 0.0, y=0.0, z=2.0, frame_id='aruco_map')
 
 #################################################################
 #                      INVENTARIZATION
 #################################################################
 balance = 0
+cargos = [[0, 'products'], [0, 'clothes'], [0, 'fragile packaging'], [0, 'correspondence']]
 if __INVENTARIZATION:
 
     def detect(img):
@@ -270,7 +324,6 @@ if __INVENTARIZATION:
                 cargos[3][0]+= 1
 
 
-    cargos = [[0, 'products'], [0, 'clothes'], [0, 'fragile packaging'], [0, 'correspondence']]
 
     navigate_wait(x=0 * 0.9, y= 6 * 0.9, z=2.0, frame_id='aruco_map')
     
@@ -285,18 +338,36 @@ if __INVENTARIZATION:
             print('cv_test calling')
             img = take_picture(invent_path + 'cv_' + str(title) + '.png')
             title += 1
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             detect(img)
             print('cv_test is done')
+
+            if __DOUBLE_CHECK:
+                navigate_wait(x=j * 0.9 + 0.45, y= (6 - i) * 0.9 , z=INVENT_HEIGHT - 0.5, frame_id='aruco_map')
+                rospy.sleep(1)
+                print('cv_test calling')
+                img = take_picture(invent_path + 'cv_' + str(title) + '.png')
+                title += 1
+                detect(img)
+                print('cv_test is done')
+
         if i != ROWS - 1:
             for j in range(8, -1, -1):
                 navigate_wait(x=j * 0.45, y= (6 - i) * 0.9 - 0.45, z=INVENT_HEIGHT, frame_id='aruco_map')
+                rospy.sleep(1)
                 print('cv_test calling')
                 img = take_picture(invent_path + str(title) + '.png')
                 title += 1
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 detect(img)
                 print('cv_test is done')
+
+                if __DOUBLE_CHECK:
+                    navigate_wait(x=j * 0.45, y= (6 - i) * 0.9 - 0.45, z=INVENT_HEIGHT -0.5, frame_id='aruco_map')
+                    rospy.sleep(1)
+                    print('cv_test calling')
+                    img = take_picture(invent_path + str(title) + '.png')
+                    title += 1
+                    detect(img)
+                    print('cv_test is done')
         
     for cargo in cargos:
         balance +=  cargo[0]
@@ -311,15 +382,21 @@ if __INVENTARIZATION:
 #################################################################
 #                  DRONEPOINT DETECTION
 #################################################################
-
+dpoints = []
 if __DP_DETECTION:
     dpoints = goDetectDP()
 
+if __DEBUG_DP and not dpoints:
+    dpoints = __DEBUG_DPS
+    print('debug dps initiated')
 print(dpoints)
+
 
 #################################################################
 #                      DELIVERING
 #################################################################
+
+delivered = []
 
 if __DELIVERING and dpoints:
     proc_start = threading.Thread(target=start_dpProcessing)
@@ -348,28 +425,52 @@ if __DELIVERING and dpoints:
         print('led is on')
         if dpoint[2] == 0:
             set_effect(r=100, g=100, b=0)  # fill strip with yellow color
-            print('D' + str(dpoint[2]) + '_delivered ', str(cargos[0]))
+            print('D' + str(dpoint[2]) + '_delivered ' + str(cargos[0][1]))
+            delivered.append((0, cargos[0][1]))
 
         elif dpoint[2] == 1:
             set_effect(r=0, g=100, b=0)  # fill strip with green color
-            print('D' + str(dpoint[2]) + '_delivered ', str(cargos[1]))
+            print('D' + str(dpoint[2]) + '_delivered ' + str(cargos[1][1]))
+            delivered.append((1, cargos[1][1]))
         elif dpoint[2] == 2:
             set_effect(r=0, g=0, b=100)  # fill strip with blue color
-            print('D' + str(dpoint[2]) + '_delivered ', str(cargos[2]))
+            print('D' + str(dpoint[2]) + '_delivered ' + str(cargos[2][1]))
+            delivered.append((2, cargos[2][1]))
 
         elif dpoint[2] == 3:
             set_effect(r=100, g=0, b= 0) # fill strip with red color
-            print('D' + str(dpoint[2]) + '_delivered ', str(cargos[3]))
+            print('D' + str(dpoint[2]) + '_delivered ' + str(cargos[3][1]))
+            delivered.append((3, cargos[3][1]))
 
         rospy.sleep(10)
+        lifted_off = False
+        for i in range(3):
+            print('trying to lift off')
 
-        print('trying to lift off')
+            telem = get_telemetry(frame_id='aruco_map')
+            print(telem)
+            
+            navigate_wait(z=1.0, frame_id='body', auto_arm=True)
 
-        navigate_wait(z=1.0, frame_id='body', auto_arm=True)
+            new_telem = get_telemetry(frame_id='aruco_map')
+            print(new_telem)
+
+            if new_telem.z - telem.z > 0.2:
+                lifted_off = True
+                break
+            print("didn't lifted off")
+            print('retrying...')
+            rospy.sleep(2)
+        if not lifted_off:
+            print('i have got some problem with lifting off :((')
+            print('flight is over')
+            sys.exit()
+
         print('lifted off')
         set_effect(r=0, g=0, b= 0)
-        navigate_wait(x=0.9 * dpoints[i][0], y=0.9 * dpoints[i][1], z=1.0, speed=DELIVERY_SPEED, frame_id='aruco_map')
-        navigate_wait(x=0.9 * dpoints[i][0], y=0.9 * dpoints[i][1], z=2.0, speed=DELIVERY_SPEED, frame_id='aruco_map')
+        if __SIM:
+            navigate_wait(x=0.9 * dpoint[0], y=0.9 * dpoint[1], z=1.0, speed=DELIVERY_SPEED, frame_id='aruco_map')
+        navigate_wait(x=0.9 * dpoint[0], y=0.9 * dpoint[1], z=2.0, speed=DELIVERY_SPEED, frame_id='aruco_map')
 
 
 
@@ -381,8 +482,14 @@ navigate_wait(x=0.0, y=0.0, z=2.0, frame_id='aruco_map')
 print('target approached')
 navigate_wait(x=0.0, y=0.0, z=0.5, frame_id='aruco_map')
 land()
-proc_start.join()
+
+for cargo in delivered:
+    print('D' + str(cargo[0]) + '_delivered ' + str(cargos[1]))
+    balance -= cargos[1]
+print('Balance: ' + str(balance) + ' cargo.')
+    
 print('flight is over')
+proc_start.join()
 
 
 

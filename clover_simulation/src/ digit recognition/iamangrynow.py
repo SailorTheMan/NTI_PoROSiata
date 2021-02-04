@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-from cv2 import aruco
 
 CROPP_DIM = 120
 
@@ -65,7 +64,7 @@ def recognize_digit(photo):
     # Initiate SIFT detector
     orb = cv2.ORB_create()      #     TODO:     |
     weights = {}                #  FIX THIS     V
-    weights[0] = compute_weight(' digit recognition/new_zero.png', photo, orb)
+    weights[0] = compute_weight(' digit recognition/rect_zero.png', photo, orb)
     weights[1] = compute_weight(' digit recognition/new_one.png', photo, orb)
     weights[2] = compute_weight(' digit recognition/new_two.png', photo, orb)
     weights[3] = compute_weight(' digit recognition/new_three.png', photo, orb)
@@ -93,7 +92,7 @@ def is_anything_green(image):
     green_mask = cv2.inRange(hsv, greenLower, greenUpper)
     #cv2.imshow("mask", green_mask)
     print(sum(sum(green_mask)))
-    if (sum(sum(green_mask)) > 8000):
+    if (sum(sum(green_mask)) > 7000):
         is_green = True
     
     return is_green
@@ -129,6 +128,6 @@ def analyze_frame(photo):
 
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
-    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/vegs_arucoN.png')   #TODO: FIX PATHS
+    img = cv2.imread('/home/clover/catkin_ws/src/clover/clover_simulation/src/ digit recognition/zero.jpg')   #TODO: FIX PATHS
     analyze_frame(img)
     #print recognize_digit(img)

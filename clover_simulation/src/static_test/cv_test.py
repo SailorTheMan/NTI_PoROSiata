@@ -79,15 +79,18 @@ def count_cargo(img):
         cargo_type = 'GREEN'
 
     yellow_mask = cv2.inRange(hsv, yellowLower, yellowUpper)
-    rgyb_counts.append(contour_counter(yellow_mask))
+    if (contour_counter(green_mask)):
+        cargo_type = 'YELLOW'
 
     blue_mask = cv2.inRange(hsv, blueLower, blueUpper)
-    rgyb_counts.append(contour_counter(blue_mask))
+    if (contour_counter(green_mask)):
+        cargo_type = 'BLUE'
+
     print('Cargo: ' + cargo_type)
     if (cargo_type != 'NONE'):
         return (1, cargo_type)
     else: 
-        return 0
+        return (0, cargo_type)
 
     #print('Total: {0}'.format(sum(rgyb_counts)))
     #print('rgyb: {0}'.format(rgyb_counts))

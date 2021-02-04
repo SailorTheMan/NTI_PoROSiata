@@ -58,12 +58,9 @@ def getContours(img, imgContour):
     cv2.rectangle(imgContour, (x, y), (x + w, y + h), (255, 0, 0), 5)
     return max_rect
 
-def empty(x):
-    pass
-
+ 
 def image_callback(img):
-    #img = bridge.imgmsg_to_cv2(data, 'bgr8')  # OpenCV image
-    
+
     imgContour = img.copy()
     imgBlur = cv2.GaussianBlur(img, (7, 7), 1)
     imgGray = cv2.cvtColor(imgBlur, cv2.COLOR_BGR2GRAY)
@@ -71,13 +68,12 @@ def image_callback(img):
     threshold1 = cv2.getTrackbarPos('Threshold1', 'Parameters')
     threshold2 = cv2.getTrackbarPos('Threshold2', 'Parameters')
     
-    
     imgCanny = cv2.Canny(imgGray, threshold1, threshold2)
     kernel = np.ones((5, 5))
     imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
 
     max_rect = getContours(imgDil, imgContour)
-    #maxRect_pub.publish(str(max_rect[0]) + ' ' + str(max_rect[1]) + ' ' + str(max_rect[2]) + ' ' + str(max_rect[3]))
+    maxRect_pub.publish(str(max_rect[0]) + ' ' + str(max_rect[1]) + ' ' + str(max_rect[2]) + ' ' + str(max_rect[3]))
     imgCenters = imgContour.copy()
     x, y, w, h = max_rect
     cv2.rectangle(imgCenters, (x + w/2-2, y + h/2-2), (x + w/2+2, y + h/2+2), (255, 0, 0), 2)
@@ -86,18 +82,17 @@ def image_callback(img):
     imgStack = stackImages(1.0, ([img, imgGray, imgCanny], 
                                  [imgDil, imgContour, imgCenters]))
 
-    cv2.imshow("stack", imgStack)
+    image_pub.publish(bridge.cv2_to_imgmsg(imgStack, 'bgr8'))
 
+def empty(a):
+    pass
 
-    #image_pub.publish(bridge.cv2_to_imgmsg(imgStack, 'bgr8'))
 cv2.namedWindow('Parameters')
-cv2.createTrackbar('Threshold1', 'Parameters', 0, 255, empty)
-cv2.createTrackbar('Threshold2', 'Parameters', 0, 255, empty)
-cv2.createTrackbar('minArea', 'Parameters', 0, 800, empty)
-while True:
-    img = cv2.imread('examples/dps_3_10.5.png')
-    image_callback(img)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
 
- 
+cv2.createTrackbar('Threshhold1', 'Parameters', (0, 255), empty)
+cv2.createTrackbar('Threshhold2', 'Parameters', (0, 255), empty)
+cv2.createTrackbar('minArea', 'Parameters', (0, 900), empty)
+
+while True:
+    img = cv2.imread('')
+

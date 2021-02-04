@@ -127,7 +127,9 @@ def analyze_frame(photo):
 
 
     if max_area > 5000 and is_anything_green(cropped_image):
-        return recognize_digit(cropped_image)
+        digit = recognize_digit(cropped_image)
+        print(digit)
+        return digit
     else: 
         print('Seems empty')
         return -1
